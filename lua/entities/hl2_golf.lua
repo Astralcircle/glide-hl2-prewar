@@ -9,7 +9,8 @@ ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/hatchback/pw_hatchback.mdl"
 
 if CLIENT then
-    ENT.CameraOffset = Vector( -270, 0, 70 )
+    ENT.CameraCenterOffset = Vector( 0, 0, 64 )
+    ENT.CameraOffset = Vector( -270, 0, 6 )
 
     ENT.ExhaustOffsets = {
         {
@@ -65,6 +66,17 @@ if CLIENT then
     function ENT:OnCreateEngineStream( stream )
         stream:LoadPreset( "hl2_golf" )
     end
+
+    function ENT:GetGears()
+        return {
+            [-1] = 12.5, -- Reverse
+            [0] = 0, -- Neutral (this number has no effect)
+            [1] = 12.5,
+            [2] = 5.55,
+            [3] = 3.84,
+            [4] = 3.03,
+        }
+    end
 end
 
 if SERVER then
@@ -87,10 +99,10 @@ if SERVER then
         self:CreateSeat( Vector( -24.000000, 16.000000, 14.000000 ), Angle( 0.000000, -90.000000, 20.000000 ), Vector( -40.000000, -80.000000, 0.000000 ), true )
 
         self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 18600 )
+        self:SetMaxRPM( 12400 )
         self:SetMinRPMTorque( 1000 )
         self:SetMaxRPMTorque( 1200 )
-        self:SetSideTractionMultiplier( 15 )
+        -- self:SetSideTractionMultiplier( 15 )
 
         self:CreateWheel( Vector( 44.500000, 28.000000, 18.500000 ), {
             model = "models/salza/hatchback/hatchback_wheel.mdl",
@@ -117,6 +129,12 @@ if SERVER then
 
 
         self:ChangeWheelRadius( 13 )
+    end
+
+    function ENT:InitializePhysics()
+        self:SetSolid( SOLID_VPHYSICS )
+        self:SetMoveType( MOVETYPE_VPHYSICS )
+        self:PhysicsInit( SOLID_VPHYSICS, Vector( 0, 0, 8 ) )
     end
 end
 

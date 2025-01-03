@@ -9,7 +9,8 @@ ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/van/pw_van.mdl"
 
 if CLIENT then
-    ENT.CameraOffset = Vector( -300, 0, 70 )
+    ENT.CameraCenterOffset = Vector( 0, 0, 64 )
+    ENT.CameraOffset = Vector( -300, 0, 6 )
 
     ENT.ExhaustOffsets = {
         {
@@ -78,6 +79,17 @@ if CLIENT then
     function ENT:OnCreateEngineStream( stream )
         stream:LoadPreset( "hl2_golf" )
     end
+
+    function ENT:GetGears()
+        return {
+            [-1] = 10, -- Reverse
+            [0] = 0, -- Neutral (this number has no effect)
+            [1] = 10,
+            [2] = 5,
+            [3] = 3.33,
+            [4] = 2.5,
+        }
+    end
 end
 
 if SERVER then
@@ -103,16 +115,16 @@ if SERVER then
         -- self:SetSpringDamper( 10500 )
 
         self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 18000 )
+        self:SetMaxRPM( 12000 )
         self:SetMinRPMTorque( 1000 )
         self:SetMaxRPMTorque( 1200 )
-        self:SetSideTractionMultiplier( 15 )
+        -- self:SetSideTractionMultiplier( 15 )
         self:SetForwardTractionBias( -0.15 )
         self:SetForwardTractionMax( 2900 )
 
         self:CreateWheel( Vector( 45.000000, 44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
-            modelAngle = Angle( 0.000000, -180.000000, 0.000000 ),
+            modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
             steerMultiplier = 1,
             modelScale = Vector( 1, 0.35, 1 )
         } )
@@ -124,7 +136,7 @@ if SERVER then
         } )
         self:CreateWheel( Vector( -72.000000, 44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
-            modelAngle = Angle( 0.000000, -180.000000, 0.000000 ),
+            modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
             modelScale = Vector( 1, 0.35, 1 )
         } )
         self:CreateWheel( Vector( -72.000000, -44.000000, 20.000000 ), {
@@ -134,6 +146,12 @@ if SERVER then
         } )
 
         self:ChangeWheelRadius( 15 )
+    end
+
+    function ENT:InitializePhysics()
+        self:SetSolid( SOLID_VPHYSICS )
+        self:SetMoveType( MOVETYPE_VPHYSICS )
+        self:PhysicsInit( SOLID_VPHYSICS, Vector( 0, 0, 14 ) )
     end
 end
 

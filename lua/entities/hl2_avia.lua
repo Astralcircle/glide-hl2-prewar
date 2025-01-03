@@ -10,7 +10,8 @@ ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/avia/avia.mdl"
 
 if CLIENT then
-    ENT.CameraOffset = Vector( -270, 0, 100 )
+    ENT.CameraCenterOffset = Vector( 0, 0, 64 )
+    ENT.CameraOffset = Vector( -270, 0, 36 )
 
     ENT.ExhaustOffsets = {
         {
@@ -55,6 +56,18 @@ if CLIENT then
     function ENT:OnCreateEngineStream( stream )
         stream:LoadPreset( "hl2_avia" )
     end
+
+    function ENT:GetGears()
+        return {
+            [-1] = 6.66, -- Reverse
+            [0] = 0, -- Neutral (this number has no effect)
+            [1] = 6.66,
+            [2] = 4,
+            [3] = 2.85,
+            [4] = 2.22,
+            [5] = 1.92
+        }
+    end
 end
 
 if SERVER then
@@ -74,10 +87,10 @@ if SERVER then
         self:CreateSeat( Vector( 79.000000, -21.000000, 45.000000 ), Angle( 0.000000, -90.000000, 0.000000 ), Vector( 60.000000, -80.000000, 10.000000 ), true )
 
         self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 12600 )
+        self:SetMaxRPM( 8400 )
         self:SetMinRPMTorque( 1100 )
         self:SetMaxRPMTorque( 1200 )
-        self:SetSideTractionMultiplier( 15 )
+        -- self:SetSideTractionMultiplier( 15 )
 
         self:SetSpringStrength( 1500 )
 
@@ -105,6 +118,12 @@ if SERVER then
         } )
 
         self:ChangeWheelRadius( 15 )
+    end
+
+    function ENT:InitializePhysics()
+        self:SetSolid( SOLID_VPHYSICS )
+        self:SetMoveType( MOVETYPE_VPHYSICS )
+        self:PhysicsInit( SOLID_VPHYSICS, Vector( 0, 0, 32 ) )
     end
 end
 
