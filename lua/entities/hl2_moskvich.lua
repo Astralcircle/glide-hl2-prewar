@@ -4,7 +4,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "base_glide_car"
 
-ENT.PrintName = "HL2 Moskvich"
+ENT.PrintName = "Moskvich"
 
 ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/moskvich/moskvich.mdl"

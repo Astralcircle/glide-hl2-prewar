@@ -3,7 +3,7 @@ AddCSLuaFile()
 
 ENT.Type = "anim"
 ENT.Base = "base_glide_car"
-ENT.PrintName = "HL2 Golf"
+ENT.PrintName = "Golf"
 
 ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/hatchback/pw_hatchback.mdl"
