@@ -13,12 +13,6 @@ if CLIENT then
     ENT.CameraCenterOffset = Vector( 0, 0, 64 )
     ENT.CameraOffset = Vector( -270, 0, 6 )
 
-    ENT.ExhaustOffsets = {
-        {
-            pos = Vector( -50.273197174072, -23.148115158081, 12.478518486023 )
-        },
-    }
-
     ENT.EngineSmokeStrips = {
         { offset = Vector( 85, 0, 40 ), angle = Angle(), width = 40 }
     }
@@ -75,25 +69,35 @@ if CLIENT then
     }
 
     function ENT:OnCreateEngineStream( stream )
-        stream:LoadPreset( "hl2_golf" )
-    end
+        stream:AddLayer( "idle", "simulated_vehicles/generic3/generic3_idle.wav", {
+            { "throttle", 0.2, 1, "volume", 1, 0 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.65 },
+        } )
 
-    function ENT:GetGears()
-        return {
-            [-1] = 10, -- Reverse
-            [0] = 0, -- Neutral (this number has no effect)
-            [1] = 10,
-            [2] = 5.88,
-            [3] = 4.16,
-            [4] = 2.7,
-            [5] = 2.43
-        }
+        stream:AddLayer( "low1", "simulated_vehicles/generic3/generic3_low.wav", {
+            { "throttle", 0, 1, "volume", 0, 0.5 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 1.48 },
+            { "rpmFraction", 0.4, 0.5, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "low2", "simulated_vehicles/generic3/generic3_idle.wav", {
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.65 },
+            { "rpmFraction", 0, 1, "volume", 0.7, 1 },
+            { "rpmFraction", 0.3, 0.6, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "mid", "simulated_vehicles/generic3/generic3_mid.wav", {
+            { "rpmFraction", 0.4, 0.5, "volume", 0, 1 },
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 1.48 },
+        } )
     end
 end
 
 if SERVER then
     ENT.SpawnPositionOffset = Vector( 0, 0, 40 )
-    ENT.ChassisMass = 900
+    ENT.ChassisMass = 800
     ENT.BurnoutForce = 35
 
     ENT.LightBodygroups = {
@@ -104,42 +108,40 @@ if SERVER then
     }
 
     function ENT:CreateFeatures()
-        self:CreateSeat( Vector( -11.000000, 17.500000, 22.000000 ), Angle( 0, -90, -5 ), Vector( 40, 80, 0 ), true )
-        self:CreateSeat( Vector( 6.000000, -17.500000, 20.000000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( 40.000000, -80.000000, 0.000000 ), true )
-        self:CreateSeat( Vector( -30.000000, -17.500000, 24.000000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -40.000000, 80.000000, 0.000000 ), true )
-        self:CreateSeat( Vector( -30.000000, 17.500000, 24.000000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -40.000000, -80.000000, 0.000000 ), true )
-        self:CreateSeat( Vector( -30.000000, 0.000000, 24.000000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -80.000000, 80.000000, 0.000000 ), true )
+        self:CreateSeat( Vector( -11.000000, 17.500000, 22.000000 ), Angle( 0, -90, -5 ), Vector( 12, 76, 12 ), true )
+        self:CreateSeat( Vector( 6.000000, -17.500000, 20.000000 ), Angle( 0.000000, -90, 12 ), Vector( 12, -76, 12 ), true )
+        self:CreateSeat( Vector( -30.000000, -17.500000, 24.000000 ), Angle( 0.000000, -90, 12 ), Vector( -20, 76, 12 ), true )
+        self:CreateSeat( Vector( -30.000000, 17.500000, 24.000000 ), Angle( 0.000000, -90, 12 ),Vector( -20, -76, 12 ), true )
+        self:CreateSeat( Vector( -30.000000, 0.000000, 24.000000 ), Angle( 0.000000, -90, 12 ), Vector( -20, -76, 12 ), true )
 
-        self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 14500 )
-        self:SetMinRPMTorque( 1000 )
-        self:SetMaxRPMTorque( 1200 )
-        -- self:SetSideTractionMultiplier( 15 )
+        self:SetMinRPM( 2000 )
+        self:SetMaxRPM( 9000 )
+        self:SetMinRPMTorque( 600 )
+        self:SetMaxRPMTorque( 800 )
+        self:SetSideTractionMultiplier( 15 )
 
         self:CreateWheel( Vector( 61.000000, 32.000000, 23.500000 ), {
             model = "models/salza/zaz/zaz_wheel.mdl",
             modelAngle = Angle( 0.000000, 180.000000, 0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( 61.000000, -34.000000, 23.500000 ), {
             model = "models/salza/zaz/zaz_wheel.mdl",
             modelAngle = Angle( -0.000000, 0.000000, -0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -53.000000, 32.000000, 23.500000 ), {
             model = "models/salza/zaz/zaz_wheel.mdl",
             modelAngle = Angle( 0.000000, 180.000000, 0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -53.000000, -34.000000, 23.500000 ), {
             model = "models/salza/zaz/zaz_wheel.mdl",
             modelAngle = Angle( -0.000000, 0.000000, -0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
-
-        self:ChangeWheelRadius( 15 )
     end
 
     function ENT:InitializePhysics()

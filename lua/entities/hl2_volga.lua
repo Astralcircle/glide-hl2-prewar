@@ -15,12 +15,6 @@ if CLIENT then
 
     ENT.HornSound = "simulated_vehicles/horn_5.wav"
 
-    ENT.ExhaustOffsets = {
-        {
-            pos = Vector( -50.273197174072, -23.148115158081, 12.478518486023 )
-        },
-    }
-
     ENT.EngineSmokeStrips = {
         { offset = Vector( 90, 0, 33 ), angle = Angle(), width = 40 }
     }
@@ -76,19 +70,29 @@ if CLIENT then
     }
 
     function ENT:OnCreateEngineStream( stream )
-        stream:LoadPreset( "hl2_volga" )
-    end
+        stream:AddLayer( "idle", "simulated_vehicles/generic2/generic2_idle.wav", {
+            { "throttle", 0.2, 1, "volume", 1, 0 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.4 },
+        } )
 
-    function ENT:GetGears()
-        return {
-            [-1] = 10, -- Reverse
-            [0] = 0, -- Neutral (this number has no effect)
-            [1] = 10,
-            [2] = 5.55,
-            [3] = 3.84,
-            [4] = 3.22,
-            [5] = 2.63,
-        }
+        stream:AddLayer( "low1", "simulated_vehicles/generic2/generic2_low.wav", {
+            { "throttle", 0, 1, "volume", 0, 0.5 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 1.4 },
+            { "rpmFraction", 0.4, 0.5, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "low2", "simulated_vehicles/generic2/generic2_idle.wav", {
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.4 },
+            { "rpmFraction", 0, 1, "volume", 0.7, 1 },
+            { "rpmFraction", 0.3, 0.6, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "mid", "simulated_vehicles/generic2/generic2_mid.wav", {
+            { "rpmFraction", 0.4, 0.5, "volume", 0, 1 },
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 1.54 },
+        } )
     end
 end
 
@@ -113,39 +117,33 @@ if SERVER then
         self:CreateSeat( Vector( -30.000000, 17.500000, 18.500000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -80.000000, 80.000000, 0.000000 ), true )
         self:CreateSeat( Vector( -30.000000, -0.000000, 18.500000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -80.000000, -80.000000, 0.000000 ), true )
 
-        -- self:SetSuspensionLength( 8 )
-        -- self:SetSpringStrength( 300` )
-
-        self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 12000 )
+        self:SetMinRPM( 2000 )
+        self:SetMaxRPM( 10500 )
         self:SetMinRPMTorque( 1000 )
         self:SetMaxRPMTorque( 1200 )
-        -- self:SetSideTractionMultiplier( 15 )
 
         self:CreateWheel( Vector( 64.000000, 34.000000, 13.000000 ) + vector_up * 6.5, {
             model = "models/salza/volga/volga_wheel.mdl",
             modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( 64.000000, -34.000000, 13.000000 ) + vector_up * 6.5, {
             model = "models/salza/volga/volga_wheel.mdl",
             modelAngle = Angle( -0.000000, 180.000000, -0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -55.000000, 34.000000, 13.000000 ) + vector_up * 6.5, {
             model = "models/salza/volga/volga_wheel.mdl",
             modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -55.000000, -34.000000, 13.000000 ) + vector_up * 6.5, {
             model = "models/salza/volga/volga_wheel.mdl",
             modelAngle = Angle( -0.000000, 180.000000, -0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
-
-        self:ChangeWheelRadius( 15 )
     end
 
     function ENT:InitializePhysics()

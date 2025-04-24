@@ -9,14 +9,8 @@ ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/van/pw_van.mdl"
 
 if CLIENT then
-    ENT.CameraCenterOffset = Vector( 0, 0, 64 )
-    ENT.CameraOffset = Vector( -300, 0, 6 )
-
-    ENT.ExhaustOffsets = {
-        {
-            pos = Vector( -50.273197174072, -23.148115158081, 12.478518486023 )
-        },
-    }
+    ENT.CameraCenterOffset = Vector( 0, 0, 80 )
+    ENT.CameraOffset = Vector( -330, 0, 6 )
 
     ENT.EngineSmokeStrips = {
         { offset = Vector( 95, 0, 40 ), angle = Angle(), width = 40 }
@@ -77,24 +71,35 @@ if CLIENT then
     -- { type = "headlight", offset = Vector( 106, -22, -1 ), dir = Vector( 1, 0, 0 ), color = Glide.DEFAULT_HEADLIGHT_COLOR }
 
     function ENT:OnCreateEngineStream( stream )
-        stream:LoadPreset( "hl2_golf" )
-    end
+        stream:AddLayer( "idle", "simulated_vehicles/generic3/generic3_idle.wav", {
+            { "throttle", 0.2, 1, "volume", 1, 0 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.2 },
+        } )
 
-    function ENT:GetGears()
-        return {
-            [-1] = 10, -- Reverse
-            [0] = 0, -- Neutral (this number has no effect)
-            [1] = 10,
-            [2] = 5,
-            [3] = 3.33,
-            [4] = 2.5,
-        }
+        stream:AddLayer( "low1", "simulated_vehicles/generic3/generic3_low.wav", {
+            { "throttle", 0, 1, "volume", 0, 0.5 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 0.9 },
+            { "rpmFraction", 0.4, 0.5, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "low2", "simulated_vehicles/generic3/generic3_idle.wav", {
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.08 },
+            { "rpmFraction", 0, 1, "volume", 0.7, 1 },
+            { "rpmFraction", 0.3, 0.6, "volume", 1, 0 },
+        } )
+
+        stream:AddLayer( "mid", "simulated_vehicles/generic3/generic3_mid.wav", {
+            { "rpmFraction", 0.4, 0.5, "volume", 0, 1 },
+            { "throttle", 0, 1, "volume", 0, 1 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 1.2 },
+        } )
     end
 end
 
 if SERVER then
     ENT.SpawnPositionOffset = Vector( 0, 0, 40 )
-    ENT.ChassisMass = 900
+    ENT.ChassisMass = 1300
     ENT.BurnoutForce = 35
 
     ENT.LightBodygroups = {
@@ -111,41 +116,42 @@ if SERVER then
         self:CreateSeat( Vector( -38.000000, -29.000000, 28.000000 ), Angle( 0.000000, 0.000000, 0.000000 ), Vector( -40.000000, -80.000000, 10.000000 ), true )
 
         self:SetSuspensionLength( 6 )
-        -- self:SetSpringStrength( 700 )
-        -- self:SetSpringDamper( 10500 )
 
-        self:SetMinRPM( 1500 )
-        self:SetMaxRPM( 12000 )
-        self:SetMinRPMTorque( 1000 )
-        self:SetMaxRPMTorque( 1200 )
-        -- self:SetSideTractionMultiplier( 15 )
-        self:SetForwardTractionBias( -0.15 )
-        self:SetForwardTractionMax( 2900 )
+        self:SetSpringStrength( 1300 )
+        self:SetSpringDamper( 5000 )
+
+        self:SetMinRPM( 2000 )
+        self:SetMaxRPM( 9000 )
+        self:SetMinRPMTorque( 950 )
+        self:SetMaxRPMTorque( 1150 )
+
+        self:SetSideTractionMultiplier( 30 )
+        self:SetForwardTractionMax( 3500 )
+        self:SetSideTractionMax( 3400 )
+        self:SetSideTractionMin( 1000 )
 
         self:CreateWheel( Vector( 45.000000, 44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
             modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( 45.000000, -44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
             modelAngle = Angle( -0.000000, 180.000000, -0.000000 ),
             steerMultiplier = 1,
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -72.000000, 44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
             modelAngle = Angle( 0.000000, 0.000000, 0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
         self:CreateWheel( Vector( -72.000000, -44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",
             modelAngle = Angle( -0.000000, 180.000000, -0.000000 ),
-            modelScale = Vector( 1, 0.35, 1 )
+            useModelSize = true
         } )
-
-        self:ChangeWheelRadius( 15 )
     end
 
     function ENT:InitializePhysics()

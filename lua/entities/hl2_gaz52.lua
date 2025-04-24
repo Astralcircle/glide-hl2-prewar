@@ -4,80 +4,90 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "base_glide_car"
 
-ENT.PrintName = "HL2 Avia"
+ENT.PrintName = "HL2 GAZ52"
 
 ENT.GlideCategory = "HL2Prewar"
-ENT.ChassisModel = "models/blu/avia/avia.mdl"
-ENT.MaxChassisHealth = 1200
+ENT.ChassisModel = "models/blu/gaz52/gaz52_r.mdl"
+ENT.MaxChassisHealth = 1500
 
 if CLIENT then
-    ENT.CameraCenterOffset = Vector( 0, 0, 64 )
-    ENT.CameraOffset = Vector( -270, 0, 36 )
+    ENT.CameraCenterOffset = Vector( 0, 0, 96 )
+    ENT.CameraOffset = Vector( -350, 0, 36 )
 
     ENT.EngineSmokeStrips = {
-        { offset = Vector( 110, -2.41, 40.13 ), angle = Angle(), width = 40 }
+        { offset = Vector( 85, 0, 43 ), angle = Angle(), width = 36 }
     }
 
     ENT.EngineFireOffsets = {
-        { offset = Vector( 120, -2.41, 40.13 ), angle = Angle() }
+        { offset = Vector( 61.23, 0, 76.81 ), angle = Angle() }
     }
 
     ENT.Headlights = {
         {
-            offset = Vector( 118.800003, -35.000000, 41.799999 ),
+            offset = Vector( 87.269989, 36.329990, 46.669994 ),
             color = Glide.DEFAULT_HEADLIGHT_COLOR
         },
         {
-            offset = Vector( 118.800003, 30.500000, 41.799999 ),
+            offset = Vector( 87.859993, -36.870003, 47.319996 ),
             color = Glide.DEFAULT_HEADLIGHT_COLOR
         },
     }
 
     ENT.LightSprites = {
         {
+            type = "brake",
+            offset = Vector( -193.999985, 43.040012, 21.049997 ),
+            dir = Vector( -1, 0, 0 )
+        },
+        {
+            type = "brake",
+            offset = Vector( -193.999985, -43.039982, 21.049997 ),
+            dir = Vector( -1, 0, 0 )
+        },
+        {
             type = "headlight",
-            offset = Vector( 118.800003, -35.000000, 41.799999 ),
+            offset = Vector( 87.269989, 36.329990, 46.669994 ),
             dir = Vector( 1, 0, 0 ),
             color = Glide.DEFAULT_HEADLIGHT_COLOR
         },
         {
             type = "headlight",
-            offset = Vector( 118.800003, 30.500000, 41.799999 ),
+            offset = Vector( 87.859993, -36.870003, 47.319996 ),
             dir = Vector( 1, 0, 0 ),
             color = Glide.DEFAULT_HEADLIGHT_COLOR
         },
     }
 
     function ENT:OnCreateEngineStream( stream )
-        stream:AddLayer( "idle", "simulated_vehicles/jeep/jeep_idle.wav", {
+        stream:AddLayer( "idle", "vehicles/crane/crane_startengine1.wav", {
             { "throttle", 0.2, 1, "volume", 1, 0 },
-            { "rpmFraction", 0, 1, "pitch", 1, 1.04 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.2 },
         } )
 
-        stream:AddLayer( "low1", "simulated_vehicles/jeep/jeep_low.wav", {
+        stream:AddLayer( "low1", "simulated_vehicles/generic2/generic2_low.wav", {
             { "throttle", 0, 1, "volume", 0, 0.5 },
-            { "rpmFraction", 0, 1, "pitch", 0.2, 0.94 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 0.42 },
             { "rpmFraction", 0.4, 0.5, "volume", 1, 0 },
         } )
 
-        stream:AddLayer( "low2", "simulated_vehicles/jeep/jeep_idle.wav", {
+        stream:AddLayer( "low2", "vehicles/crane/crane_startengine1.wav", {
             { "throttle", 0, 1, "volume", 0, 1 },
-            { "rpmFraction", 0, 1, "pitch", 1, 1.04 },
+            { "rpmFraction", 0, 1, "pitch", 1, 1.2 },
             { "rpmFraction", 0, 1, "volume", 0.7, 1 },
             { "rpmFraction", 0.3, 0.6, "volume", 1, 0 },
         } )
 
-        stream:AddLayer( "mid", "simulated_vehicles/jeep/jeep_mid.wav", {
+        stream:AddLayer( "mid", "simulated_vehicles/alfaromeo/alfaromeo_mid.wav", {
             { "rpmFraction", 0.4, 0.5, "volume", 0, 1 },
             { "throttle", 0, 1, "volume", 0, 1 },
-            { "rpmFraction", 0, 1, "pitch", 0.2, 1 },
+            { "rpmFraction", 0, 1, "pitch", 0.2, 0.6 },
         } )
     end
 end
 
 if SERVER then
     ENT.SpawnPositionOffset = Vector( 0, 0, 40 )
-    ENT.ChassisMass = 1800
+    ENT.ChassisMass = 2250
     ENT.BurnoutForce = 0
 
     ENT.LightBodygroups = {
@@ -88,13 +98,14 @@ if SERVER then
     }
 
     function ENT:CreateFeatures()
-        self:CreateSeat( Vector( 69.000000, 21.000000, 43.000000 ), Angle( 0, -90, -5 ), Vector( 60, 80, 10 ), true )
-        self:CreateSeat( Vector( 79.000000, -21.000000, 45.000000 ), Angle( 0.000000, -90.000000, 0.000000 ), Vector( 60.000000, -80.000000, 10.000000 ), true )
+
+        self:CreateSeat( Vector( -10, 20, 50 ), Angle( 0, -90, 5 ), Vector( 5, 89, 8 ), true )
+        self:CreateSeat( Vector( 0, -22, 50 ), Angle( 0, -90, 5 ), Vector( 5, -89, 8 ), true )
 
         self:SetMinRPM( 1000 )
-        self:SetMaxRPM( 6000 )
-        self:SetMinRPMTorque( 1600 )
-        self:SetMaxRPMTorque( 1900 )
+        self:SetMaxRPM( 5800 )
+        self:SetMinRPMTorque( 1500 )
+        self:SetMaxRPMTorque( 1750 )
 
         self:SetSpringStrength( 1500 )
         self:SetSpringDamper( 5000 )
@@ -114,28 +125,32 @@ if SERVER then
         self:SetSideTractionMax( 3800 )
         self:SetSideTractionMin( 1200 )
 
-        self:CreateWheel( Vector( 78.000000, 37.000000, 25.000000 ), {
-            model = "models/salza/avia/avia_wheel_r.mdl",
-            modelAngle = Angle( 0.000000, 0, 0.000000 ),
+        self:CreateWheel( Vector( 55, -40, 33 ), {
+            model = "models/salza/gaz52/gaz52_wheel_r.mdl",
+            modelAngle = Angle( 0, 0, 0 ),
             steerMultiplier = 1,
             useModelSize = true
         } )
-        self:CreateWheel( Vector( 78.000000, -40.000000, 25.000000 ), {
-            model = "models/salza/avia/avia_wheel_r.mdl",
-            modelAngle = Angle( -0.000000, -180.000000, -0.000000 ),
+
+        self:CreateWheel( Vector( 55.000000, 40, 33 ), {
+            model = "models/salza/gaz52/gaz52_wheel_r.mdl",
+            modelAngle = Angle( 0, -180, 0 ),
             steerMultiplier = 1,
             useModelSize = true
         } )
-        self:CreateWheel( Vector( -55.000000, 38.500000, 25.000000 ), {
-            model = "models/salza/avia/avia_wheel_r.mdl",
-            modelAngle = Angle( 0.000000, 0, 0.000000 ),
+
+        self:CreateWheel( Vector( -120.000000, -45, 33 ), {
+            model = "models/salza/gaz52/gaz52_wheel_r.mdl",
+            modelAngle = Angle( 0, 0, 0 ),
             useModelSize = true
         } )
-        self:CreateWheel( Vector( -55.000000, -37.000000, 25.000000 ), {
-            model = "models/salza/avia/avia_wheel_r.mdl",
-            modelAngle = Angle( -0.000000, -180.000000, -0.000000 ),
+
+        self:CreateWheel( Vector( -120, 45, 33 ), {
+            model = "models/salza/gaz52/gaz52_wheel_r.mdl",
+            modelAngle = Angle( 0, -180, 0 ),
             useModelSize = true
         } )
+
     end
 
     function ENT:InitializePhysics()
