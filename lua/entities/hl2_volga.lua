@@ -117,10 +117,12 @@ if SERVER then
         self:CreateSeat( Vector( -30.000000, 17.500000, 18.500000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -80.000000, 80.000000, 0.000000 ), true )
         self:CreateSeat( Vector( -30.000000, -0.000000, 18.500000 ), Angle( 0.000000, -90.000000, 12.000000 ), Vector( -80.000000, -80.000000, 0.000000 ), true )
 
-        self:SetMinRPM( 2000 )
-        self:SetMaxRPM( 10500 )
-        self:SetMinRPMTorque( 1000 )
-        self:SetMaxRPMTorque( 1200 )
+        self:SetMinRPM( 2000 ) // 750 2000
+        self:SetMaxRPM( 10500 ) // 6000 10500
+        self:SetMinRPMTorque( 1000 ) // 1000
+        self:SetMaxRPMTorque( 1200 ) // 1200
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 ) // 0.62 / 1.61
 
         self:CreateWheel( Vector( 64.000000, 34.000000, 13.000000 ) + vector_up * 6.5, {
             model = "models/salza/volga/volga_wheel.mdl",

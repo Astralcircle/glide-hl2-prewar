@@ -110,6 +110,8 @@ if SERVER then
         self:SetMinRPMTorque( 750 )
         self:SetMaxRPMTorque( 950 )
         self:SetSteerConeMaxSpeed( 900 )
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 )
 
         self:CreateWheel( Vector( 44.500000, 28.000000, 18.500000 ), {
             model = "models/salza/hatchback/hatchback_wheel.mdl",

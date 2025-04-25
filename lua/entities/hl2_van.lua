@@ -129,6 +129,8 @@ if SERVER then
         self:SetForwardTractionMax( 3500 )
         self:SetSideTractionMax( 3400 )
         self:SetSideTractionMin( 1000 )
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 )
 
         self:CreateWheel( Vector( 45.000000, 44.000000, 20.000000 ), {
             model = "models/salza/van/van_wheel.mdl",

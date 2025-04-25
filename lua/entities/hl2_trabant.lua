@@ -118,6 +118,8 @@ if SERVER then
         self:SetMaxRPM( 8000 )
         self:SetMinRPMTorque( 800 )
         self:SetMaxRPMTorque( 1000 )
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 )
 
         self:CreateWheel( Vector( 50, 32, 19 ), {
             model = "models/salza/trabant/trabant_wheel_r.mdl",

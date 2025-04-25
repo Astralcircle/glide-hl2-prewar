@@ -119,6 +119,8 @@ if SERVER then
         self:SetMinRPMTorque( 600 )
         self:SetMaxRPMTorque( 800 )
         self:SetSideTractionMultiplier( 15 )
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 )
 
         self:CreateWheel( Vector( 61.000000, 32.000000, 23.500000 ), {
             model = "models/salza/zaz/zaz_wheel.mdl",

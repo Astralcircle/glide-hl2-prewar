@@ -122,6 +122,8 @@ if SERVER then
         self:SetMaxRPM( 13000 )
         self:SetMinRPMTorque( 1000 )
         self:SetMaxRPMTorque( 1200 )
+        self:SetForwardTractionMax( 2600 )
+        self:SetDifferentialRatio( 1.9 )
 
         self:CreateWheel( Vector( 52.000000, 32.000000, 18.500000 ), {
             model = "models/salza/moskvich/moskvich_wheel_r.mdl",
