@@ -4,7 +4,7 @@ AddCSLuaFile()
 ENT.Type = "anim"
 ENT.Base = "base_glide_car"
 
-ENT.PrintName = "HL2 Liaz"
+ENT.PrintName = "Liaz"
 
 ENT.GlideCategory = "HL2Prewar"
 ENT.ChassisModel = "models/blu/skoda_liaz/skoda_liaz_r.mdl"
