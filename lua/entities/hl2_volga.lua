@@ -6,7 +6,7 @@ ENT.Base = "base_glide_car"
 
 ENT.PrintName = "Volga"
 
-ENT.GlideCategory = "HL2Prewar"
+ENT.GlideCategory = "HL2"
 ENT.ChassisModel = "models/blu/volga/volga.mdl"
 
 if CLIENT then

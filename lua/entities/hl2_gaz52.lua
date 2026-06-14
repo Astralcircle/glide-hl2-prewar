@@ -6,7 +6,7 @@ ENT.Base = "base_glide_car"
 
 ENT.PrintName = "GAZ52"
 
-ENT.GlideCategory = "HL2Prewar"
+ENT.GlideCategory = "HL2"
 ENT.ChassisModel = "models/blu/gaz52/gaz52_r.mdl"
 ENT.MaxChassisHealth = 1500
 

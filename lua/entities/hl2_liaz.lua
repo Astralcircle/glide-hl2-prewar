@@ -6,7 +6,7 @@ ENT.Base = "base_glide_car"
 
 ENT.PrintName = "Liaz"
 
-ENT.GlideCategory = "HL2Prewar"
+ENT.GlideCategory = "HL2"
 ENT.ChassisModel = "models/blu/skoda_liaz/skoda_liaz_r.mdl"
 ENT.MaxChassisHealth = 2000
 

@@ -5,7 +5,7 @@ ENT.Type = "anim"
 ENT.Base = "base_glide_car"
 ENT.PrintName = "Golf"
 
-ENT.GlideCategory = "HL2Prewar"
+ENT.GlideCategory = "HL2"
 ENT.ChassisModel = "models/blu/hatchback/pw_hatchback.mdl"
 
 if CLIENT then
