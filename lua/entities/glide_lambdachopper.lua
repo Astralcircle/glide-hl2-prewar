@@ -10,7 +10,7 @@ ENT.PrintName = "Lambda-Chopper"
 DEFINE_BASECLASS( "glide_hunterchopper" )
 
 function ENT:CreateFeatures()
-    BaseClass.CreateFeatures( self )
+	BaseClass.CreateFeatures( self )
 
-    self:SetSubMaterial( 0, "models/resist/combine_helicopter01" )
+	self:SetSubMaterial( 0, "models/resist/combine_helicopter01" )
 end

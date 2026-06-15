@@ -5,73 +5,73 @@
 VSWEP.Base = "base"
 
 if SERVER then
-    function VSWEP:PrimaryAttack()
-        local vehicle = self.Vehicle
+	function VSWEP:PrimaryAttack()
+		local vehicle = self.Vehicle
 
-        local attacker = vehicle:GetSeatDriver( 1 )
+		local attacker = vehicle:GetSeatDriver( 1 )
 
-        if not IsValid( attacker ) then return end
+		if not IsValid( attacker ) then return end
 
-        self:TakePrimaryAmmo( 1 )
-        self:SetNextPrimaryFire( CurTime() + self.FireDelay )
-        -- self:IncrementProjectileIndex()
-        self:ShootEffects()
+		self:TakePrimaryAmmo( 1 )
+		self:SetNextPrimaryFire( CurTime() + self.FireDelay )
+		-- self:IncrementProjectileIndex()
+		self:ShootEffects()
 
-        local att = vehicle:GetAttachment( vehicle.muzzle )
-        local pos = att.Pos
-        local aimPos = attacker:GlideGetAimPos()
+		local att = vehicle:GetAttachment( vehicle.muzzle )
+		local pos = att.Pos
+		local aimPos = attacker:GlideGetAimPos()
 
-        local dir = aimPos - pos
-        dir:Normalize()
+		local dir = aimPos - pos
+		dir:Normalize()
 
-        if dir:Dot( vehicle:GetForward() ) < 0.9 then
-            vehicle:SetFiringGun( false )
-            return
-        end
+		if dir:Dot( vehicle:GetForward() ) < 0.9 then
+			vehicle:SetFiringGun( false )
+			return
+		end
 
-        vehicle:SetFiringGun( true )
+		vehicle:SetFiringGun( true )
 
-        local bullet = {}
-        bullet.Num = 1
-        bullet.Src = pos
-        bullet.Dir = dir
-        bullet.Spread = Vector( 0.08,  0.08, 0 )
-        bullet.Tracer = 1
-        bullet.TracerName = "HelicopterTracer"
-        bullet.Force = 20
-        bullet.Damage = 11
-        bullet.Attacker = attacker
-        bullet.Callback = function( _, trace, dmginfo )
-            if not trace.HitPos or not trace.HitNormal then return end
+		local bullet = {}
+		bullet.Num = 1
+		bullet.Src = pos
+		bullet.Dir = dir
+		bullet.Spread = Vector( 0.08,  0.08, 0 )
+		bullet.Tracer = 1
+		bullet.TracerName = "HelicopterTracer"
+		bullet.Force = 20
+		bullet.Damage = 11
+		bullet.Attacker = attacker
+		bullet.Callback = function( _, trace, dmginfo )
+			if not trace.HitPos or not trace.HitNormal then return end
 
-            dmginfo:SetDamageType( DMG_AIRBOAT )
+			dmginfo:SetDamageType( DMG_AIRBOAT )
 
-            local e = EffectData()
-            e:SetOrigin( trace.HitPos )
-            e:SetNormal( trace.HitNormal )
-            util.Effect( "AR2Impact", e )
-        end
+			local e = EffectData()
+			e:SetOrigin( trace.HitPos )
+			e:SetNormal( trace.HitNormal )
+			util.Effect( "AR2Impact", e )
+		end
 
-        vehicle:FireBullets( bullet )
+		vehicle:FireBullets( bullet )
 
-        local effectData = EffectData()
-        effectData:SetAttachment( vehicle.muzzle )
-        effectData:SetEntity( vehicle )
+		local effectData = EffectData()
+		effectData:SetAttachment( vehicle.muzzle )
+		effectData:SetEntity( vehicle )
 
-        util.Effect("ChopperMuzzleFlash", effectData)
-    end
+		util.Effect("ChopperMuzzleFlash", effectData)
+	end
 
-    function VSWEP:ShootEffects()
+	function VSWEP:ShootEffects()
 
-    end
+	end
 end
 
 if CLIENT then
-    local DrawWeaponCrosshair = Glide.DrawWeaponCrosshair
+	local DrawWeaponCrosshair = Glide.DrawWeaponCrosshair
 
-    function VSWEP:DrawCrosshair()
-        if self.CrosshairImage == "" then return end
+	function VSWEP:DrawCrosshair()
+		if self.CrosshairImage == "" then return end
 
-        DrawWeaponCrosshair( ScrW() / 2, ScrH() / 2, self.CrosshairImage, self.CrosshairSize, color )
-    end
+		DrawWeaponCrosshair( ScrW() / 2, ScrH() / 2, self.CrosshairImage, self.CrosshairSize, color )
+	end
 end

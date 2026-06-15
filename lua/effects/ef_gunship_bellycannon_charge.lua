@@ -4,18 +4,18 @@ EFFECT.LifeTime = 2.125
 EFFECT.DieTime = 0
 
 function EFFECT:Init( data )
-    self.Entity = data:GetEntity()
-    self.DieTime = CurTime() + self.LifeTime
+	self.Entity = data:GetEntity()
+	self.DieTime = CurTime() + self.LifeTime
 
-    if IsValid( self.Entity ) then
-        local pos = self.Entity:GetPos()
-        self:SetRenderBoundsWS( pos, pos - self.Entity:GetUp() * 32768 )
-    end
+	if IsValid( self.Entity ) then
+		local pos = self.Entity:GetPos()
+		self:SetRenderBoundsWS( pos, pos - self.Entity:GetUp() * 32768 )
+	end
 end
 
 function EFFECT:Think()
-    if CurTime() > self.DieTime then return false end
-    return true
+	if CurTime() > self.DieTime then return false end
+	return true
 end
 
 -- local function lerp( x )
@@ -25,28 +25,28 @@ end
 local lerp = math.ease.InExpo
 
 function EFFECT:Render()
-    if !IsValid( self.Entity ) then return end
+	if !IsValid( self.Entity ) then return end
 
-    local muzzle = self.Entity:GetAttachment( self.Entity:LookupAttachment( "bellygun" ) )
+	local muzzle = self.Entity:GetAttachment( self.Entity:LookupAttachment( "bellygun" ) )
 
-    local progress = self.LifeTime - ( self.DieTime - CurTime() )
+	local progress = self.LifeTime - ( self.DieTime - CurTime() )
 
-    local delta
+	local delta
 
-    if progress < 2 then
-        delta = lerp( progress / 2 )
-    else
-        delta = -( ( progress - 2 ) * 8 ) ^ 2 + 1
-    end
+	if progress < 2 then
+		delta = lerp( progress / 2 )
+	else
+		delta = -( ( progress - 2 ) * 8 ) ^ 2 + 1
+	end
 
-    local tr = util.TraceLine( {
-        start = muzzle.Pos,
-        endpos = muzzle.Pos - self.Entity:GetUp() * 32768,
-        filter = self.Entity
-    } )
+	local tr = util.TraceLine( {
+		start = muzzle.Pos,
+		endpos = muzzle.Pos - self.Entity:GetUp() * 32768,
+		filter = self.Entity
+	} )
 
-    self:SetRenderBoundsWS( muzzle.Pos, tr.HitPos )
+	self:SetRenderBoundsWS( muzzle.Pos, tr.HitPos )
 
-    render.SetMaterial( beamFX )
-    render.DrawBeam( muzzle.Pos, tr.HitPos, delta * 196, 0, 1, color_white )
+	render.SetMaterial( beamFX )
+	render.DrawBeam( muzzle.Pos, tr.HitPos, delta * 196, 0, 1, color_white )
 end
