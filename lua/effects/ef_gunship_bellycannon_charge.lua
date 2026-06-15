@@ -2,20 +2,19 @@ local beamFX = Material("sprites/bluelaser1")
 
 EFFECT.LifeTime = 2.125
 EFFECT.DieTime = 0
-EFFECT.Attachment = 0
 
 function EFFECT:Init( data )
     self.Entity = data:GetEntity()
-    self.Attachment = self.Entity:LookupAttachment( "bellygun" )
     self.DieTime = CurTime() + self.LifeTime
 
-    local pos = self.Entity:GetPos()
-    self:SetRenderBoundsWS( pos, pos - self.Entity:GetUp() * 32768 )
+    if IsValid( self.Entity ) then
+        local pos = self.Entity:GetPos()
+        self:SetRenderBoundsWS( pos, pos - self.Entity:GetUp() * 32768 )
+    end
 end
 
 function EFFECT:Think()
     if CurTime() > self.DieTime then return false end
-
     return true
 end
 
@@ -28,7 +27,7 @@ local lerp = math.ease.InExpo
 function EFFECT:Render()
     if !IsValid( self.Entity ) then return end
 
-    local muzzle = self.Entity:GetAttachment( self.Attachment )
+    local muzzle = self.Entity:GetAttachment( self.Entity:LookupAttachment( "bellygun" ) )
 
     local progress = self.LifeTime - ( self.DieTime - CurTime() )
 
