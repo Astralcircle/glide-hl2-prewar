@@ -74,6 +74,8 @@ if CLIENT then
 
 		if driver == LocalPlayer() then
 			local att = self:GetAttachment( self.muzzle )
+			if not att then return end
+			
 			local pos = att.Pos
 			local aimPos = Glide.GetCameraAimPos()
 
@@ -135,11 +137,11 @@ if CLIENT then
 	local offset = Vector( -20, 0, -2.5 )
 
 	function ENT:UpdateLights( selfTbl )
+		if not selfTbl.muzzle then return end
 		local headlightState = self:GetHeadlightState()
 
-		if not selfTbl.muzzle then return end
-
 		local att = self:GetAttachment( selfTbl.muzzle )
+		if not att then return end
 
 		if selfTbl.headlightState ~= headlightState then
 			selfTbl.headlightState = headlightState
@@ -306,6 +308,8 @@ if SERVER then
 
 		if IsValid( driver ) then
 			local att = self:GetAttachment( self.muzzle )
+			if not att then return end
+			
 			local pos = att.Pos
 			local aimPos = driver:GlideGetAimPos()
 
