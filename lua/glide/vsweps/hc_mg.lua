@@ -72,6 +72,6 @@ if CLIENT then
 	function VSWEP:DrawCrosshair()
 		if self.CrosshairImage == "" then return end
 
-		DrawWeaponCrosshair( ScrW() / 2, ScrH() / 2, self.CrosshairImage, self.CrosshairSize, color )
+		DrawWeaponCrosshair( ScrW() / 2, ScrH() / 2, self.CrosshairImage, self.CrosshairSize, color_white )
 	end
 end
